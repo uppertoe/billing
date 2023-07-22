@@ -14,6 +14,7 @@ urlpatterns = [
     path("users/", include("billing.users.urls", namespace="users")),
     path("accounts/", include("allauth.urls")),
     # Your stuff: custom urls includes go here
+    path("", include("billing.bills.urls")),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 

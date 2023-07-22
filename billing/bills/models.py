@@ -65,6 +65,13 @@ class Item(models.Model):
     edition = models.ForeignKey(Edition, on_delete=models.CASCADE, blank=True, null=True)
     item_group = models.ForeignKey(ItemGroup, on_delete=models.CASCADE, related_name="items", blank=True, null=True)
 
+    @classmethod
+    def search(cls, query, scheme=ASA, category=None):
+        objects = cls.objects.filter(scheme=scheme)
+        if category:
+            objects = objects.filter(category=category)
+        return objects.filter(models.Q(description__icontains=query) | models.Q(code__icontains=query))
+
     def __str__(self):
         return f"{self.code}: {self.description}"
 

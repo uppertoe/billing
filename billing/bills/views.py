@@ -25,11 +25,8 @@ def create_case(request):
     if request.method == "POST":
         form = CaseForm(request.POST)
         if form.is_valid():
-            # Retrieve the Profile object with id=1
-            profile_obj = Profile.objects.get(id=1)
-
-            # Assign the retrieved profile_obj to the profile field of the form's instance
-            form.instance.profile = profile_obj
+            # Set the Profile to the user
+            form.instance.profile = request.user.profile
             form.save()
             return redirect("home")
     else:

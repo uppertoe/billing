@@ -5,7 +5,9 @@ from django.utils import timezone
 
 class Profile(models.Model):
     name = models.CharField(max_length=255)
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, blank=True, null=True)
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, blank=True, null=True, related_name="profile"
+    )
 
     def __str__(self):
         return self.name

@@ -50,3 +50,22 @@ class CaseForm(forms.ModelForm):
             "modifiers",
             Submit("submit", "Save"),
         )
+
+    def save(self, commit=True):
+        case_instance = super().save(commit=False)
+
+        # Get the ManyToMany fields
+        base_items = self.cleaned_data.get("base_items", [])
+        procedures = self.cleaned_data.get("procedures", [])
+        modifiers = self.cleaned_data.get("modifiers", [])
+
+        # Futher validation can be performed here
+
+        # Exclude empty items
+        items = [item_list for item_list in [base_items, procedures, modifiers] if item_list]
+
+        if commit:
+            case_instance.save()
+            case_instance.items.set(items)
+
+        return case_instance

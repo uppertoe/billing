@@ -28,8 +28,11 @@ def create_case(request):
             # Set the Profile to the user
             profile = Profile.objects.get(user=request.user)
             form.instance.profile = profile
+
+            # ManyToMany fields are saved in the form.save()
             form.save()
-            return redirect("home")
+
+            return redirect("case_list")
     else:
         form = CaseForm()
     return render(request, "bills/case_form.html", {"form": form})

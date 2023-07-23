@@ -77,15 +77,15 @@ class Item(models.Model):
 
     @classmethod
     def get_base_items(cls, scheme=ASA):
-        return cls.objects.filter(scheme=scheme)
+        return cls.objects.filter(scheme=scheme, category__name="Base")
 
     @classmethod
     def get_procedures(cls, scheme=ASA):
-        return cls.objects.filter(scheme=scheme)
+        return cls.objects.filter(scheme=scheme, category__name="Procedures")
 
     @classmethod
     def get_modifiers(cls, scheme=ASA):
-        return cls.objects.filter(scheme=scheme, category__name="Time")
+        return cls.objects.filter(scheme=scheme, category__name="Modifiers")
 
     def __str__(self):
         return f"{self.code}: {self.description}"

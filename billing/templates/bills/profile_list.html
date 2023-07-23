@@ -6,7 +6,9 @@
     {% for profile in profiles %}
       {% if profile.cases.all %}
         <h3>{{ profile }}</h3>
-        {% for case in profile.cases.all %}<p>{{ case }}</p>{% endfor %}
+        {% for case in profile.cases.all %}
+          <p>{{ case }}: {{ case.total_units }} unit{{ case.total_units|pluralize }}</p>
+        {% endfor %}
       {% endif %}
     {% endfor %}
   </div>

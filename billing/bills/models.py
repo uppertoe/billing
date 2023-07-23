@@ -112,5 +112,11 @@ class Case(models.Model):
     def assign_time_item(self):
         pass
 
+    def total_units(self):
+        units = 0
+        for item in self.items.all():
+            units += item.units
+        return units
+
     def __str__(self):
         return f"{self.procedure} on {self.date:%d-%m-%Y}"

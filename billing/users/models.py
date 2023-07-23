@@ -3,6 +3,7 @@ from django.db.models import CharField, EmailField
 from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
 
+from billing.bills.models import Profile
 from billing.users.managers import UserManager
 
 
@@ -33,3 +34,10 @@ class User(AbstractUser):
 
         """
         return reverse("users:detail", kwargs={"pk": self.id})
+
+    def save(self, *args, **kwargs):
+        if not self.pk:
+            name = self.name if self.name else self.email.split("@")[0]
+            profile = Profile(name=name, user=self)
+            profile.save()
+        super().save(*args, **kwargs)

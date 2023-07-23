@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+
+{% load crispy_forms_tags %}
+
+<!-- Your form content -->
+{% block content %}
+  <h3 class="py-3">Enter case details</h3>
+  <form method="post">
+    {% csrf_token %}
+    {% crispy form %}
+  </form>
+{% endblock content %}

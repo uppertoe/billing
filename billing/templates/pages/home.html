@@ -14,7 +14,15 @@
         Log in to submit your after-hours billing to the RCH Department of Anaesthesia and Pain Medicine
       </p>
       <div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
-        <button type="button" class="btn btn-primary btn-lg px-4 gap-3">Login</button>
+        <a href="{% url 'create_case' %}"
+           type="button"
+           class="btn btn-primary btn-lg px-4 gap-3">Add cases</a>
+        <a href="{% url 'case_list' %}"
+           type="button"
+           class="btn btn-primary btn-lg px-4 gap-3">View my cases</a>
+        <a href="{% url 'profile_list' %}"
+           type="button"
+           class="btn btn-primary btn-lg px-4 gap-3">Cathi's view</a>
       </div>
     </div>
   </div>

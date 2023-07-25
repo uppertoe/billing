@@ -37,7 +37,9 @@ class User(AbstractUser):
 
     def save(self, *args, **kwargs):
         if not self.pk:
-            name = self.name if self.name else self.email.split("@")[0]
+            name = self.name if self.name else self.email.split("@")[0].capitalize()
             profile = Profile(name=name, user=self)
+            super().save(*args, **kwargs)
             profile.save()
-        super().save(*args, **kwargs)
+        else:
+            super().save(*args, **kwargs)

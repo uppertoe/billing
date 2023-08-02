@@ -10,7 +10,7 @@ class CaseForm(forms.ModelForm):
         model = Case
         fields = ["date", "age", "age_unit", "procedure", "start", "end"]
         widgets = {
-            "date": forms.DateInput(format=("%Y-%m-%d"), attrs={"type": "date", "format": "dd/mm/yyyy"}),
+            "date": forms.DateInput(format=("%Y-%m-%d"), attrs={"type": "date"}),
             "start": forms.TimeInput(attrs={"type": "time"}),
             "end": forms.TimeInput(attrs={"type": "time"}),
             "age_unit": forms.RadioSelect(),
@@ -25,8 +25,11 @@ class CaseForm(forms.ModelForm):
         self.fields["extra_items"] = forms.ModelMultipleChoiceField(queryset=Item.get_extra_items(), required=False)
 
         self.helper = FormHelper()
-        self.helper.add_input(Submit("submit", "Submit", css_class="btn-primary"))
         self.helper.form_method = "POST"
+        self.helper.form_class = "form-horizontal"
+        self.helper.label_class = "col-lg-2"
+        self.helper.field_class = "col-lg-8"
+        self.helper.add_input(Submit("submit", "Submit", css_class="btn-primary"))
 
     def save(self, commit=True):
         case_instance = super().save(commit=False)

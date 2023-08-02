@@ -1,3 +1,5 @@
+from datetime import date, datetime, timedelta
+
 from django.conf import settings
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
@@ -141,6 +143,13 @@ class Case(models.Model):
 
     def calc_case_duration(self):
         pass
+
+    def calc_time_delta(self):
+        start_datetime = datetime.combine(date.min, self.start)
+        end_datetime = datetime.combine(date.min, self.end)
+        if end_datetime < start_datetime:
+            end_datetime = end_datetime + timedelta(hours=24)
+        return end_datetime - start_datetime
 
     def assign_time_item(self):
         pass

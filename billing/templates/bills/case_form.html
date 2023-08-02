@@ -2,11 +2,43 @@
 
 {% load crispy_forms_tags %}
 
+{% block css %}
+  {{ block.super }}
+{% endblock css %}
+{% block javascript %}
+  {{ block.super }}
+{% endblock javascript %}
 <!-- Your form content -->
 {% block content %}
-  <h3 class="py-3">Enter case details</h3>
-  <form method="post">
-    {% csrf_token %}
+  <div class="py-3">
+    <h3 class="py-3">Enter case details</h3>
     {% crispy form %}
-  </form>
+  </div>
 {% endblock content %}
+{% block inline_javascript %}
+  <link href="https://cdn.jsdelivr.net/npm/tom-select@2.2.2/dist/css/tom-select.css"
+        rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/tom-select@2.2.2/dist/js/tom-select.complete.min.js"></script>
+  <script>
+    document.querySelectorAll('.select').forEach((el) => {
+      let settings = {};
+      new TomSelect(el, settings);
+      el.parentElement.lastElementChild.classList.remove('form-select');
+    });
+
+    document.querySelectorAll('.selectmultiple').forEach((el) => {
+      let settings = {
+        plugins: {
+          remove_button: {
+            title: 'Remove this item',
+          }
+        },
+        duplicates: true,
+        hideSelected: false,
+        placeholder: "Choose items"
+      };
+      new TomSelect(el, settings);
+      el.parentElement.lastElementChild.classList.remove('form-select');
+    });
+  </script>
+{% endblock inline_javascript %}

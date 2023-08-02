@@ -1,0 +1,16 @@
+{% load crispy_forms_tags %}
+
+<form method="post" id="case-form">
+  {% csrf_token %}
+  {{ form|crispy }}
+  <input type="hidden"
+         name="num_extra_fields"
+         value="{{ num_extra_fields|default:"0" }}" />
+  <button type="submit" form="case-form">Save Case</button>
+  <button form="case-form"
+          formnovalidate
+          hx-post="{% url 'create_case' %}"
+          hx-swap="outerHTML"
+          hx-target="#case-form"
+          hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'>Add Item</button>
+</form>

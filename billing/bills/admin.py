@@ -18,8 +18,8 @@ class CategoryAdmin(admin.ModelAdmin):
     list_display = ("name",)
 
 
-@admin.register(models.ItemGroup)
-class ItemGroupAdmin(admin.ModelAdmin):
+@admin.register(models.EquivalentItem)
+class EquivalentItemAdmin(admin.ModelAdmin):
     list_display = ("description",)
 
 

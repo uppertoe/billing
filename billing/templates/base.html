@@ -30,6 +30,10 @@
       {% render_bundle 'vendors' 'js' attrs='defer' %}
       <!-- place project specific Javascript in this file -->
       {% render_bundle 'project' 'js' attrs='defer' %}
+      <script src="https://unpkg.com/htmx.org@1.9.4"
+              integrity="sha384-zUfuhFKKZCbHTY6aRR46gxiqszMk5tcHjsVFxnUo8VMus4kHGVdIYVbOYYNlKmHV"
+              crossorigin="anonymous"
+              defer></script>
     {% endblock javascript %}
   </head>
   <body>
@@ -49,29 +53,37 @@
           <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav mr-auto">
               <li class="nav-item active">
-                <a class="nav-link" href="{% url 'home' %}">Home <span class="visually-hidden">(current)</span></a>
+                <a class="nav-link{% if request.resolver_match.url_name in 'home' %} active{% endif %}"
+                   href="{% url 'home' %}">Home <span class="visually-hidden">(current)</span></a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="{% url 'create_case' %}">Add case</a>
+                <a class="nav-link{% if request.resolver_match.url_name in 'create_case' %} active{% endif %}"
+                   href="{% url 'create_case' %}">Add case</a>
               </li>
               {% if request.user.is_authenticated %}
                 <li class="nav-item">
-                  <a class="nav-link" href="{% url 'case_list' %}">View my cases</a>
+                  <a class="nav-link{% if request.resolver_match.url_name in 'case_list' %} active{% endif %}"
+                     href="{% url 'case_list' %}">View my cases</a>
                 </li>
                 <li class="nav-item">
                   {# URL provided by django-allauth/account/urls.py #}
-                  <a class="nav-link" href="{% url 'account_logout' %}">{% translate "Sign Out" %}</a>
+                  <a class="nav-link{% if request.resolver_match.url_name in 'account_logout' %} active{% endif %}"
+                     href="{% url 'account_logout' %}">{% translate "Sign Out" %}</a>
                 </li>
               {% else %}
                 {% if ACCOUNT_ALLOW_REGISTRATION %}
                   <li class="nav-item">
                     {# URL provided by django-allauth/account/urls.py #}
-                    <a id="sign-up-link" class="nav-link" href="{% url 'account_signup' %}">{% translate "Sign Up" %}</a>
+                    <a id="sign-up-link"
+                       class="nav-link{% if request.resolver_match.url_name in 'account_signup' %} active{% endif %}"
+                       href="{% url 'account_signup' %}">{% translate "Sign Up" %}</a>
                   </li>
                 {% endif %}
                 <li class="nav-item">
                   {# URL provided by django-allauth/account/urls.py #}
-                  <a id="log-in-link" class="nav-link" href="{% url 'account_login' %}">{% translate "Sign In" %}</a>
+                  <a id="log-in-link"
+                     class="nav-link{% if request.resolver_match.url_name in 'account_login' %} active{% endif %}"
+                     href="{% url 'account_login' %}">{% translate "Sign In" %}</a>
                 </li>
               {% endif %}
             </ul>

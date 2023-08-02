@@ -24,17 +24,17 @@ def search_items(request, category=None):
 def create_case(request):
     if request.method == "POST":
         form = CaseForm(request.POST)
+
         if form.is_valid():
             # Set the Profile to the user
-            profile = Profile.objects.get(user=request.user)
-            form.instance.profile = profile
-
-            # ManyToMany fields are saved in the form.save()
+            instance = form.save(commit=False)
+            instance.profile = Profile.objects.get(user=request.user)
             form.save()
 
             return redirect("case_list")
     else:
         form = CaseForm()
+
     return render(request, "bills/case_form.html", {"form": form})
 
 
@@ -46,10 +46,11 @@ class CaseListView(LoginRequiredMixin, ListView):
     # Restrict to own cases
     def get_queryset(self, *args, **kwargs):
         queryset = super().get_queryset(*args, **kwargs)
-        return queryset.filter(profile__user=self.request.user)
+        return queryset.filter(profile__user=self.request.user).prefetch_related("items")
 
 
 class ProfileListView(ListView):
     model = Profile
     template_name = "bills/profile_list.html"
     context_object_name = "profiles"
+    queryset = Profile.objects.all().prefetch_related("cases__items")

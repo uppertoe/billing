@@ -151,8 +151,21 @@ class Case(models.Model):
             end_datetime = end_datetime + timedelta(hours=24)
         return end_datetime - start_datetime
 
-    def assign_time_item(self):
-        pass
+    def assign_time_item(self, scheme=Item.ASA):
+        time_item_numbers = list(Item.filter(scheme=scheme, item_type=Item.TIME).order_by("-code"))
+        duration = self.calc_time_delta()
+
+        # Time item numbers increment 15 minutely for the first 2 hours, then 10 minutely
+        index = 0
+        time_counter = timedelta(minutes=0)
+        while time_counter < duration:
+            if time_counter < timedelta(hours=2):
+                time_counter += timedelta(minutes=15)
+            else:
+                time_counter += timedelta(minutes=10)
+            index += 1
+
+        return time_item_numbers[index]
 
     def total_units(self):
         return self.items.aggregate(total_units=models.Sum("units"))["total_units"] or 0

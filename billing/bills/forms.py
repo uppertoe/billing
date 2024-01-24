@@ -31,18 +31,31 @@ class CaseForm(forms.ModelForm):
         self.helper.field_class = "col-lg-8"
         self.helper.add_input(Submit("submit", "Submit", css_class="btn-primary"))
 
-    def save(self, commit=True):
-        case_instance = super().save(commit=False)
+    def clean(self):
+        cleaned_data = super().clean()
 
-        # Get the ManyToMany fields
         base_item = self.cleaned_data["base_item"]
         modifier_items = self.cleaned_data.get("modifier_items", [])
         extra_items = self.cleaned_data.get("extra_items", [])
 
         items = [base_item] + list(modifier_items) + list(extra_items)
 
-        # Futher validation can be performed here
+        processed_ids = set()
+        for item in items:
+            if item.id in processed_ids:
+                if not item.duplicate_allowed:
+                    msg = f"{item} can only be added once"
+                    raise forms.ValidationError(msg)
+            else:
+                processed_ids.add(item.id)
 
+        cleaned_data["items"] = items
+
+        return cleaned_data
+
+    def save(self, commit=True):
+        case_instance = super().save(commit=False)
+        items = self.cleaned_data["items"]
         if commit:
             case_instance.save()
             case_instance.items.set(items)

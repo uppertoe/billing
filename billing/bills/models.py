@@ -141,9 +141,6 @@ class Case(models.Model):
     created = models.DateTimeField(auto_now_add=True)
     modified = models.DateTimeField(auto_now=True)
 
-    def calc_case_duration(self):
-        pass
-
     def calc_time_delta(self):
         start_datetime = datetime.combine(date.min, self.start)
         end_datetime = datetime.combine(date.min, self.end)
@@ -151,7 +148,7 @@ class Case(models.Model):
             end_datetime = end_datetime + timedelta(hours=24)
         return end_datetime - start_datetime
 
-    def assign_time_item(self, scheme=Item.ASA):
+    def calc_time_item(self, scheme=Item.ASA):
         time_item_numbers = list(Item.filter(scheme=scheme, item_type=Item.TIME).order_by("-code"))
         duration = self.calc_time_delta()
 
